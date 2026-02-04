@@ -533,6 +533,8 @@ The contract ABIs and deployment addresses are managed in a **separate repositor
 - **Mounted at**: `core/abi/`
 - **Contains**: Auto-generated `deployedContracts.ts` and chain-specific ABIs
 
+**Note**: The submodule uses HTTPS URL for compatibility with CI/CD platforms like Vercel.
+
 **Why separate?**
 - Decouples frontend from smart contract deployment
 - Smart contract repo can publish ABIs independently
