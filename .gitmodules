@@ -1,5 +1,5 @@
 [submodule "core/abi"]
 	path = core/abi
-	url = git@github.com:greekfi/abi.git
+	url = https://github.com/greekfi/abi.git
 	branch = main
 	update = merge
