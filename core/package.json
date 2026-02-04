@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "prebuild": "cd .. && git submodule update --init --remote --merge core/abi && cd core",
     "build": "next build",
     "check-types": "tsc --noEmit --incremental",
     "dev": "next dev",
