@@ -1050,7 +1050,6 @@ __metadata:
   resolution: "@greek/core@workspace:core"
   dependencies:
     "@next/env": "npm:^16.1.6"
-    "@next/swc-darwin-arm64": "npm:^16.1.6"
     "@rainbow-me/rainbowkit": "npm:2.2.10"
     "@tailwindcss/postcss": "npm:4.1.18"
     "@tanstack/react-query": "npm:^5.90.20"
@@ -1083,7 +1082,7 @@ __metadata:
     typescript: "npm:^5.9.3"
     undici: "npm:^7.20.0"
     viem: "npm:2.45.1"
-    wagmi: "npm:^2.12.0"
+    wagmi: "npm:^2.19.5"
   languageName: unknown
   linkType: soft
 
@@ -1780,14 +1779,6 @@ __metadata:
 "@next/swc-darwin-arm64@npm:16.0.10":
   version: 16.0.10
   resolution: "@next/swc-darwin-arm64@npm:16.0.10"
-  conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@next/swc-darwin-arm64@npm:^16.1.6":
-  version: 16.1.6
-  resolution: "@next/swc-darwin-arm64@npm:16.1.6"
-  checksum: 10/4c0fb8d62e968b283914f33000afc5e90ce7731d4badb813069861ce87778e31756307208a7f76fbb2be4b39eebe55826b9133897148f42145299818403defb7
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
@@ -11520,7 +11511,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wagmi@npm:^2.12.0":
+"wagmi@npm:^2.19.5":
   version: 2.19.5
   resolution: "wagmi@npm:2.19.5"
   dependencies:

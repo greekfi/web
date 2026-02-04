@@ -2,6 +2,7 @@
   "name": "@greek/core",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "yarn@4.12.0",
   "scripts": {
     "build": "next build",
     "check-types": "tsc --noEmit --incremental",
@@ -35,7 +36,6 @@
     "wagmi": "^2.19.5"
   },
   "devDependencies": {
-    "@next/swc-darwin-arm64": "^16.1.6",
     "@tailwindcss/postcss": "4.1.18",
     "@trivago/prettier-plugin-sort-imports": "~6.0.2",
     "@types/fastestsmallesttextencoderdecoder": "^1.0.2",
