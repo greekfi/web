@@ -525,6 +525,47 @@ useScaffoldWatchContractEvent({
 
 ### Deployment Process & Auto-Generated Contract Files
 
+#### ABI Repository (Git Submodule)
+
+The contract ABIs and deployment addresses are managed in a **separate repository** as a git submodule:
+
+- **Repository**: `git@github.com:greekfi/abi.git`
+- **Mounted at**: `core/abi/`
+- **Contains**: Auto-generated `deployedContracts.ts` and chain-specific ABIs
+
+**Why separate?**
+- Decouples frontend from smart contract deployment
+- Smart contract repo can publish ABIs independently
+- Frontend can update ABIs without full contract redeployment
+- Multiple frontends can share the same ABI source
+
+**Updating the ABI Submodule**:
+```bash
+# Use the yarn command to update ABIs
+yarn abi
+
+# Or manually with git
+git submodule update --remote core/abi
+```
+
+**Initial Setup** (if cloning the repo fresh):
+```bash
+# Clone with submodules
+git clone --recurse-submodules <repo-url>
+
+# Install dependencies
+yarn install
+
+# Update to latest ABIs
+yarn abi
+```
+
+**How It Works**:
+- ABIs are stored in a separate git repository as a submodule
+- `yarn abi` pulls the latest from the ABI repo's main branch
+- Frontend always uses ABIs from `core/abi/deployedContracts.ts`
+- Run `yarn abi` after contract deployments to get latest ABIs
+
 #### How Deployment Works
 
 When you run `yarn deploy`:
@@ -552,15 +593,16 @@ When you run `yarn deploy`:
 
 3. **Scaffold-ETH Auto-Generates TypeScript File**:
    - Reads deployment data from `broadcast/` directory
-   - Generates `core/contracts/deployedContracts.ts`
+   - Generates `deployedContracts.ts` in the ABI repository
    - Creates fully-typed contract configuration
+   - **Push to ABI repo** to make available to frontend
 
 #### The `deployedContracts.ts` File
 
-This file is **automatically generated** and contains:
+This file is **automatically generated** in the ABI submodule (`core/abi/deployedContracts.ts`) and contains:
 
 ```typescript
-// core/contracts/deployedContracts.ts
+// core/abi/deployedContracts.ts
 
 const deployedContracts = {
   31337: {  // Local Anvil chainId
@@ -613,7 +655,18 @@ export default deployedContracts;
 
 #### Using Deployed Contracts in Frontend
 
-The hooks automatically use this file:
+**Importing from ABI Submodule**:
+```typescript
+// Import deployed contracts from the ABI submodule
+import deployedContracts from "~~/abi/deployedContracts";
+
+// Access contracts for current chain
+const chainId = useChainId();
+const contracts = deployedContracts[chainId as keyof typeof deployedContracts];
+const factoryAddress = contracts?.OptionFactory?.address;
+```
+
+The Scaffold-ETH hooks automatically use this file:
 
 ```typescript
 // The hook knows "Option" exists and has "mint" function with specific args

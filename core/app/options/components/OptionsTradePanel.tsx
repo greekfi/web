@@ -4,7 +4,7 @@ import { useRfqPricingStream } from "../hooks/useRfqPricingStream";
 import { useRfqQuote } from "../hooks/useRfqQuote";
 import { formatUnits, parseUnits } from "viem";
 import { useAccount, useChainId, useReadContract, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
-import deployedContracts from "~~/contracts/deployedContracts";
+import deployedContracts from "~~/abi/deployedContracts";
 
 // Option ABI for mint and exercise
 const OPTION_ABI = [

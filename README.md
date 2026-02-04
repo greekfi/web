@@ -48,8 +48,15 @@ foundry/contracts/
 
 **Setup:**
 ```bash
+# Clone with submodules
+git clone --recurse-submodules <repo-url>
+cd <repo-directory>
+
 # Install dependencies
 yarn install
+
+# Update ABIs to latest (run after contract deployments)
+yarn abi
 
 # Terminal 1: Start local blockchain
 yarn chain
@@ -60,6 +67,10 @@ yarn deploy
 # Terminal 3: Start frontend
 yarn start
 ```
+
+**ABI Management:**
+- `yarn abi` - Update ABIs to latest from the ABI repository
+- Run this command after smart contract deployments to pull latest ABIs
 
 Visit `http://localhost:3000`
 

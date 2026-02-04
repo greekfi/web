@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { parseAbiItem } from "viem";
 import { useChainId, usePublicClient } from "wagmi";
-import deployedContracts from "~~/contracts/deployedContracts";
+import deployedContracts from "~~/abi/deployedContracts";
 
 const OPTION_CREATED_EVENT = parseAbiItem(
   "event OptionCreated(address indexed collateral, address indexed consideration, uint40 expirationDate, uint96 strike, bool isPut, address indexed option, address redemption)",
