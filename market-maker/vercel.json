@@ -1,12 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd core && yarn build",
+  "buildCommand": "yarn build",
   "installCommand": "yarn install",
+  "framework": null,
   "git": {
     "deploymentEnabled": {
       "main": true
     }
-  },
-  "github": {
-    "autoJobCancelation": true  }
+  }
 }

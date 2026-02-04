@@ -1,1 +1,12 @@
-{}
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "git submodule status && git submodule update --init --recursive --remote && yarn build",
+  "installCommand": "yarn install",
+  "outputDirectory": ".next",
+  "framework": "nextjs",
+  "git": {
+    "deploymentEnabled": {
+      "main": true
+    }
+  }
+}
