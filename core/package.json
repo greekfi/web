@@ -32,9 +32,10 @@
     "react-dom": "^19.2.4",
     "undici": "^7.20.0",
     "viem": "2.45.1",
-    "wagmi": "3.4.2"
+    "wagmi": "^2.19.5"
   },
   "devDependencies": {
+    "@next/swc-darwin-arm64": "^16.1.6",
     "@tailwindcss/postcss": "4.1.18",
     "@trivago/prettier-plugin-sort-imports": "~6.0.2",
     "@types/fastestsmallesttextencoderdecoder": "^1.0.2",
