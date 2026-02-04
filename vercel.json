@@ -3,9 +3,11 @@
   "git": {
     "deploymentEnabled": {
       "main": true
-    }
+    },
+    "submodules": true
   },
   "github": {
     "autoJobCancelation": true
-  }
+  },
+  "buildCommand": "yarn abi && cd core && yarn build"
 }
