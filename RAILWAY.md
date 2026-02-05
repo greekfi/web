@@ -16,14 +16,18 @@ Quick reference for deploying market-maker services to Railway.
 1. **Create Railway project**: [railway.app/new](https://railway.app/new)
 2. **Connect GitHub repo**: Select `greek-web`
 3. **Create Bebop service**:
+   - Builder: Railpack (auto-detected)
    - Root Directory: `market-maker`
    - Start Command: `yarn bebop`
    - Add environment variables
 4. **Create Relay service** (same project):
    - Click "+ New" → GitHub Repo → Same repo
+   - Builder: Railpack (auto-detected)
    - Root Directory: `market-maker`
    - Start Command: `yarn relay`
    - Add environment variables
+
+**Note**: Railpack auto-detects yarn from `yarn.lock` - no config files needed!
 
 ### Environment Variables
 
