@@ -32,7 +32,7 @@ export class PricingStream {
   constructor(private config: PricingStreamConfig) {
     this.pricer = config.pricer;
     this.updateIntervalMs = config.updateIntervalMs ?? 5000;
-    this.wss = new WebSocketServer({ port: config.port });
+    this.wss = new WebSocketServer({ port: config.port, host: "0.0.0.0" });
 
     this.setupServer();
   }
