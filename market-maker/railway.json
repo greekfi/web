@@ -4,7 +4,7 @@
     "builder": "RAILPACK"
   },
   "deploy": {
-    "startCommand": "yarn bebop",
+    "startCommand": "yarn workspace @greek/market-maker bebop",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   }

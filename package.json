@@ -24,7 +24,10 @@
     "build": "yarn workspace @greek/core build",
     "next:check-types": "yarn workspace @greek/core check-types",
     "test": "yarn workspace @greek/foundry test",
-    "vercel": "yarn workspace @greek/core vercel"
+    "vercel": "yarn workspace @greek/core vercel",
+    "mm:bebop": "yarn workspace @greek/market-maker bebop",
+    "mm:relay": "yarn workspace @greek/market-maker relay",
+    "mm:direct": "yarn workspace @greek/market-maker direct"
   },
   "devDependencies": {
     "husky": "~9.1.7",
