@@ -2,7 +2,7 @@
   "name": "@greek/market-maker",
   "version": "1.0.0",
   "private": true,
-  "packageManager": "yarn@1.22.22",
+  "packageManager": "yarn@4.12.0",
   "scripts": {
     "dev": "tsx watch src/direct.ts",
     "start": "tsx src/direct.ts",
