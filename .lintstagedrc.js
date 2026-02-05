@@ -9,7 +9,7 @@ const buildNextEslintCommand = (filenames) => {
   return `cd core && eslint --fix ${relativeFiles}`;
 };
 
-const checkTypesNextCommand = () => "yarn next:check-types";
+const checkTypesNextCommand = () => "cd core && yarn check-types";
 
 const buildFoundryFormatCommand = (filenames) => {
   const cwd = path.join(process.cwd(), "foundry");
