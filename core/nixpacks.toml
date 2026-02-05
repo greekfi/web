@@ -1,0 +1,16 @@
+# Railway/Nixpacks configuration for core (frontend)
+
+[phases.setup]
+# Fetch git submodules (abi repository)
+cmds = [
+  'git submodule update --init --recursive'
+]
+
+[phases.install]
+cmds = ['yarn install']
+
+[phases.build]
+cmds = ['yarn build']
+
+[start]
+cmd = 'yarn serve'
