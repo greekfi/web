@@ -2,12 +2,6 @@
   "name": "greek-protocol",
   "version": "0.0.1",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "foundry",
-      "core"
-    ]
-  },
   "scripts": {
     "account": "yarn workspace @greek/foundry account",
     "account:generate": "yarn workspace @greek/foundry account:generate",
