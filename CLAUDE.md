@@ -527,7 +527,7 @@ useScaffoldWatchContractEvent({
 
 #### ABI Repository
 
-The contract ABIs and deployment addresses are stored directly in the `/abi` directory at the project root:
+The contract ABIs and deployment addresses are stored directly in the `/abi` directory:
 
 - **Location**: `/abi/`
 - **Contains**: Auto-generated `deployedContracts.ts` and chain-specific ABIs
@@ -536,12 +536,17 @@ The contract ABIs and deployment addresses are stored directly in the `/abi` dir
 ```bash
 /abi/
 ├── deployedContracts.ts    # Auto-generated contract addresses and ABIs
+├── chains/                 # Chain-specific contract ABIs
+│   ├── mainnet.ts
+│   ├── base.ts
+│   ├── foundry.ts
+│   └── ...
 └── .gitkeep                # Ensures directory is tracked in git
 ```
 
 **How It Works**:
 - ABIs are auto-generated during deployment and stored in `/abi/deployedContracts.ts`
-- Frontend imports from `~~/abi/deployedContracts` (the `~~/` prefix resolves to project root)
+- Frontend imports from `~~/abi/deployedContracts` (the `~~/` prefix resolves to both `core/` and parent `../` directories)
 - After running `yarn deploy`, the deployment script automatically updates `/abi/deployedContracts.ts`
 - Changes to ABIs should be committed to version control
 
