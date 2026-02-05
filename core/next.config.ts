@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import path from "path";
 
 const nextConfig: any = {
   reactStrictMode: true,
@@ -7,9 +6,7 @@ const nextConfig: any = {
   typescript: {
     ignoreBuildErrors: process.env.NEXT_PUBLIC_IGNORE_BUILD_ERROR === "true",
   },
-  turbopack: {
-    root: path.resolve(__dirname, ".."),
-  },
+  turbopack: {},
   serverExternalPackages: ["pino-pretty", "lokijs", "encoding", "thread-stream"],
   webpack: (config: any) => {
     config.resolve.fallback = { fs: false, net: false, tls: false };
