@@ -2,6 +2,7 @@
   "name": "@greek/market-maker",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "yarn@1.22.22",
   "scripts": {
     "dev": "tsx watch src/direct.ts",
     "start": "tsx src/direct.ts",
@@ -19,7 +20,7 @@
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
-    "protobufjs": "^8.0.0",
+    "protobufjs": "^7.4.0",
     "viem": "^2.45.1",
     "ws": "^8.19.0"
   },
