@@ -5,8 +5,7 @@
   "workspaces": {
     "packages": [
       "foundry",
-      "core",
-      "market-maker"
+      "core"
     ]
   },
   "scripts": {
