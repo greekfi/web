@@ -60,8 +60,8 @@ export class PricingRelay extends EventEmitter {
   private prices: Map<string, PriceData> = new Map(); // "chainId:base/quote" -> PriceData
   private config: PricingRelayConfig;
   private reconnectAttempts: Map<string, number> = new Map();
-  private maxReconnectAttempts = 10;
   private baseReconnectDelay = 1000;
+  private maxReconnectDelay = 60000; // Cap backoff at 60s
 
   constructor(config: PricingRelayConfig) {
     super();
@@ -201,18 +201,12 @@ export class PricingRelay extends EventEmitter {
     }
   }
 
-  // Schedule reconnection with exponential backoff
+  // Schedule reconnection with exponential backoff (no limit, caps at 60s)
   private scheduleReconnect(chain: string): void {
     const attempts = this.reconnectAttempts.get(chain) || 0;
+    const delay = Math.min(this.baseReconnectDelay * Math.pow(2, attempts), this.maxReconnectDelay);
 
-    if (attempts >= this.maxReconnectAttempts) {
-      console.error(`❌ Max reconnect attempts reached for ${chain}`);
-      return;
-    }
-
-    const delay = this.baseReconnectDelay * Math.pow(2, attempts);
     console.log(`🔄 Reconnecting to ${chain} in ${delay}ms (attempt ${attempts + 1})`);
-
     this.reconnectAttempts.set(chain, attempts + 1);
 
     setTimeout(() => {

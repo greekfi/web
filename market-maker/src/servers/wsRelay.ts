@@ -353,6 +353,6 @@ export function startPricingServer(relay: PricingRelay, port: number = 3004): Pr
 
 // Factory function for createWsRelay
 export function createWsRelay(relay: PricingRelay): PricingServer {
-  const port = parseInt(process.env.RELAY_WS_PORT || "3004");
+  const port = parseInt(process.env.RELAY_WS_PORT || process.env.PORT || "3004");
   return new PricingServer(relay, port);
 }
