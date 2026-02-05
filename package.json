@@ -13,7 +13,6 @@
     "account": "yarn workspace @greek/foundry account",
     "account:generate": "yarn workspace @greek/foundry account:generate",
     "account:import": "yarn workspace @greek/foundry account:import",
-    "abi": "git submodule update --init --remote --merge core/abi && echo '✅ ABI submodule updated to latest'",
     "chain": "yarn workspace @greek/foundry chain",
     "compile": "yarn workspace @greek/foundry compile",
     "deploy": "yarn workspace @greek/foundry deploy",

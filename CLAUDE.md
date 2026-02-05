@@ -525,48 +525,25 @@ useScaffoldWatchContractEvent({
 
 ### Deployment Process & Auto-Generated Contract Files
 
-#### ABI Repository (Git Submodule)
+#### ABI Repository
 
-The contract ABIs and deployment addresses are managed in a **separate repository** as a git submodule:
+The contract ABIs and deployment addresses are stored directly in the `/abi` directory at the project root:
 
-- **Repository**: `git@github.com:greekfi/abi.git`
-- **Mounted at**: `core/abi/`
+- **Location**: `/abi/`
 - **Contains**: Auto-generated `deployedContracts.ts` and chain-specific ABIs
 
-**Note**: The submodule uses HTTPS URL for compatibility with CI/CD platforms like Vercel.
-
-**Why separate?**
-- Decouples frontend from smart contract deployment
-- Smart contract repo can publish ABIs independently
-- Frontend can update ABIs without full contract redeployment
-- Multiple frontends can share the same ABI source
-
-**Updating the ABI Submodule**:
+**Directory Structure**:
 ```bash
-# Use the yarn command to update ABIs
-yarn abi
-
-# Or manually with git
-git submodule update --remote core/abi
-```
-
-**Initial Setup** (if cloning the repo fresh):
-```bash
-# Clone with submodules
-git clone --recurse-submodules <repo-url>
-
-# Install dependencies
-yarn install
-
-# Update to latest ABIs
-yarn abi
+/abi/
+├── deployedContracts.ts    # Auto-generated contract addresses and ABIs
+└── .gitkeep                # Ensures directory is tracked in git
 ```
 
 **How It Works**:
-- ABIs are stored in a separate git repository as a submodule
-- `yarn abi` pulls the latest from the ABI repo's main branch
-- Frontend always uses ABIs from `core/abi/deployedContracts.ts`
-- Run `yarn abi` after contract deployments to get latest ABIs
+- ABIs are auto-generated during deployment and stored in `/abi/deployedContracts.ts`
+- Frontend imports from `~~/abi/deployedContracts` (the `~~/` prefix resolves to project root)
+- After running `yarn deploy`, the deployment script automatically updates `/abi/deployedContracts.ts`
+- Changes to ABIs should be committed to version control
 
 #### How Deployment Works
 
@@ -595,16 +572,16 @@ When you run `yarn deploy`:
 
 3. **Scaffold-ETH Auto-Generates TypeScript File**:
    - Reads deployment data from `broadcast/` directory
-   - Generates `deployedContracts.ts` in the ABI repository
+   - Generates `deployedContracts.ts` in `/abi/` directory
    - Creates fully-typed contract configuration
-   - **Push to ABI repo** to make available to frontend
+   - **Commit changes** to make ABIs available across the codebase
 
 #### The `deployedContracts.ts` File
 
-This file is **automatically generated** in the ABI submodule (`core/abi/deployedContracts.ts`) and contains:
+This file is **automatically generated** in the `/abi/` directory (`/abi/deployedContracts.ts`) and contains:
 
 ```typescript
-// core/abi/deployedContracts.ts
+// /abi/deployedContracts.ts
 
 const deployedContracts = {
   31337: {  // Local Anvil chainId
@@ -657,9 +634,9 @@ export default deployedContracts;
 
 #### Using Deployed Contracts in Frontend
 
-**Importing from ABI Submodule**:
+**Importing Deployed Contracts**:
 ```typescript
-// Import deployed contracts from the ABI submodule
+// Import deployed contracts from /abi directory
 import deployedContracts from "~~/abi/deployedContracts";
 
 // Access contracts for current chain
