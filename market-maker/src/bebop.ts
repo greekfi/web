@@ -46,6 +46,7 @@ async function main() {
       expiry: metadata.expirationTimestamp,
       isPut: metadata.isPut,
       decimals: 18, // Option tokens have 18 decimals
+      collateralAddress: metadata.collateralAddress,
     });
   }
 

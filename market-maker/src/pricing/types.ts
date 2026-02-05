@@ -5,8 +5,8 @@ export interface OptionParams {
   expiry: number;
   isPut: boolean;
   underlying: string;
-  collateralAddress: string;
-  considerationAddress: string;
+  collateralAddress?: string;
+  considerationAddress?: string;
   optionAddress: string;
   decimals: number;
 }

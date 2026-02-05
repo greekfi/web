@@ -1,0 +1,18 @@
+import { defineConfig } from "tsup";
+
+export default defineConfig({
+  entry: {
+    direct: "src/direct.ts",
+    bebop: "src/bebop.ts",
+    relay: "src/relay.ts",
+  },
+  format: ["esm"],
+  dts: true,
+  sourcemap: true,
+  clean: true,
+  splitting: false,
+  treeshake: true,
+  outDir: "dist",
+  target: "es2022",
+  skipNodeModulesBundle: true,
+});
