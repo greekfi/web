@@ -15,4 +15,7 @@ export default defineConfig({
   outDir: "dist",
   target: "es2022",
   skipNodeModulesBundle: true,
+  banner: {
+    js: 'import { createRequire } from "module"; const require = createRequire(import.meta.url);',
+  },
 });
