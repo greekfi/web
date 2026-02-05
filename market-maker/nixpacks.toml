@@ -9,3 +9,7 @@ cmds = ["yarn install --frozen-lockfile"]
 
 [start]
 cmd = "yarn bebop"  # Default, overridden by railway.toml
+
+# Force yarn as package manager (ignore package-lock.json)
+[variables]
+NIXPACKS_INSTALL_CMD = "yarn install --frozen-lockfile"
