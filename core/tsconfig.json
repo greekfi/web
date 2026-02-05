@@ -15,7 +15,8 @@
     "jsx": "react-jsx",
     "incremental": true,
     "paths": {
-      "~~/*": ["./*", "../*"]
+      "~~/abi/*": ["../abi/*"],
+      "~~/*": ["./*"]
     },
     "plugins": [
       {
