@@ -1,11 +1,10 @@
 // modes/bebop.ts
-import { Pricer } from "../pricing/pricer";
 import { BebopClient } from "../bebop/client";
 import { PricingStream } from "../bebop/pricingStream";
 import type { RFQRequest } from "../bebop/types";
 import { getToken } from "../config/tokens";
 
-export async function startBebopMode(pricer: Pricer) {
+export async function startBebopMode(pricer: any) {
   const chainId = parseInt(process.env.CHAIN_ID || "1");
   const chain = (process.env.CHAIN || "ethereum") as any;
   const makerAddress = process.env.MAKER_ADDRESS || "0x0000000000000000000000000000000000000000";

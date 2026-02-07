@@ -5,7 +5,6 @@
  */
 
 import WebSocket from "ws";
-import type { Pricer } from "../pricing/pricer";
 import { bebop } from "./proto/pricing_pb";
 
 const { LevelsSchema, LevelMsg, LevelInfo } = bebop;
@@ -22,12 +21,12 @@ export interface PricingStreamConfig {
 export class PricingStream {
   private ws: WebSocket | null = null;
   private config: PricingStreamConfig;
-  private pricer: Pricer;
+  private pricer: any;
   private interval: NodeJS.Timeout | null = null;
   private reconnectAttempts = 0;
   private maxReconnectDelay = 300000; // Cap at 5 minutes
 
-  constructor(config: PricingStreamConfig, pricer: Pricer) {
+  constructor(config: PricingStreamConfig, pricer: any) {
     this.config = config;
     this.pricer = pricer;
   }

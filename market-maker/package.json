@@ -10,9 +10,11 @@
     "direct": "tsx src/direct.ts",
     "bebop": "tsx src/bebop.ts",
     "relay": "tsx src/relay.ts",
+    "deribit": "tsx src/deribit.ts",
     "dev:direct": "tsx watch src/direct.ts",
     "dev:bebop": "tsx watch src/bebop.ts",
     "dev:relay": "tsx watch src/relay.ts",
+    "dev:deribit": "tsx watch src/deribit.ts",
     "fetch-metadata": "tsx scripts/fetch-metadata.ts",
     "proto": "pbjs -t static-module -w es6 -o src/bebop/proto/pricing_pb.js src/bebop/proto/*.proto && pbts -o src/bebop/proto/pricing_pb.d.ts src/bebop/proto/pricing_pb.js"
   },
