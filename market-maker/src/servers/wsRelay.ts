@@ -69,12 +69,14 @@ export class PricingServer {
   private clients: Map<WebSocket, ClientSubscription> = new Map();
   private heartbeatInterval: NodeJS.Timeout | null = null;
   private statsInterval: NodeJS.Timeout | null = null;
+  private lastSentPrices: Map<string, string> = new Map(); // cacheKey -> "bid|ask" for dedup
 
   // Stats tracking
   private stats = {
     pricesReceived: 0,
     pricesForwarded: 0,
     pricesFiltered: 0,
+    pricesDeduplicated: 0,
   };
 
   constructor(relay: PricingRelay, port: number) {
@@ -92,7 +94,7 @@ export class PricingServer {
   private startStats(): void {
     this.statsInterval = setInterval(() => {
       console.log(
-        `[ws-stats] clients=${this.clients.size} | received=${this.stats.pricesReceived} forwarded=${this.stats.pricesForwarded} filtered=${this.stats.pricesFiltered}`
+        `[ws-stats] clients=${this.clients.size} | received=${this.stats.pricesReceived} forwarded=${this.stats.pricesForwarded} filtered=${this.stats.pricesFiltered} deduped=${this.stats.pricesDeduplicated}`
       );
     }, 30000);
   }
@@ -270,8 +272,20 @@ export class PricingServer {
       return;
     }
 
+    // Deduplicate: skip if top-of-book bid/ask hasn't changed
+    const cacheKey = `${event.chainId}:${event.pair}`;
+    const topBid = event.data.bids[0]?.[0] ?? 0;
+    const topAsk = event.data.asks[0]?.[0] ?? 0;
+    const priceKey = `${topBid}|${topAsk}`;
+    const lastPrice = this.lastSentPrices.get(cacheKey);
+    if (lastPrice === priceKey) {
+      this.stats.pricesDeduplicated++;
+      return;
+    }
+    this.lastSentPrices.set(cacheKey, priceKey);
+
     // Log first 3 option price matches to confirm filtering works
-    if (this.stats.pricesReceived - this.stats.pricesFiltered <= 3) {
+    if (this.stats.pricesReceived - this.stats.pricesFiltered - this.stats.pricesDeduplicated <= 3) {
       console.log(
         `[relay-match] Option price: chain=${event.chainId} base=${event.data.base.slice(0, 10)}... bids=${event.data.bids.length} asks=${event.data.asks.length}`
       );
