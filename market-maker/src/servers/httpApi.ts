@@ -226,7 +226,7 @@ export class QuoteServer {
   }
 
   public start(): void {
-    this.app.listen(this.config.port, () => {
+    this.app.listen(this.config.port, "0.0.0.0", () => {
       console.log(`Quote server listening on port ${this.config.port}`);
       console.log(`  Health:  http://localhost:${this.config.port}/health`);
       console.log(`  Options: http://localhost:${this.config.port}/options`);

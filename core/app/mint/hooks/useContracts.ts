@@ -1,5 +1,5 @@
 import { useChainId } from "wagmi";
-import deployedContracts from "~~/contracts/deployedContracts";
+import deployedContracts from "~~/abi/deployedContracts";
 
 export function useContracts() {
   const chainId = useChainId();

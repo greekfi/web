@@ -19,7 +19,7 @@ export class BebopClient {
   private ws: WebSocket | null = null;
   private config: BebopConfig;
   private reconnectAttempts = 0;
-  private maxReconnectAttempts = 10;
+  private maxReconnectDelay = 300000; // Cap at 5 minutes
   private reconnectDelay = 1000;
   private heartbeatInterval: NodeJS.Timeout | null = null;
   private isConnected = false;
@@ -98,13 +98,8 @@ export class BebopClient {
   }
 
   private scheduleReconnect(): void {
-    if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-      console.error("Max reconnect attempts reached");
-      return;
-    }
-
-    const delay = this.reconnectDelay * Math.pow(2, this.reconnectAttempts);
-    console.log(`Reconnecting in ${delay}ms...`);
+    const delay = Math.min(this.reconnectDelay * Math.pow(2, this.reconnectAttempts), this.maxReconnectDelay);
+    console.log(`Reconnecting in ${delay}ms... (attempt ${this.reconnectAttempts + 1})`);
 
     setTimeout(() => {
       this.reconnectAttempts++;

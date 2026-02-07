@@ -2,29 +2,20 @@
   "name": "greek-protocol",
   "version": "0.0.1",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "foundry",
-      "core",
-      "market-maker"
-    ]
-  },
   "scripts": {
-    "account": "yarn workspace @greek/foundry account",
-    "account:generate": "yarn workspace @greek/foundry account:generate",
-    "account:import": "yarn workspace @greek/foundry account:import",
-    "chain": "yarn workspace @greek/foundry chain",
-    "compile": "yarn workspace @greek/foundry compile",
-    "deploy": "yarn workspace @greek/foundry deploy",
-    "format": "yarn workspaces foreach -A run format",
-    "lint": "yarn workspaces foreach -A run lint",
     "postinstall": "husky install",
     "precommit": "lint-staged",
-    "start": "yarn workspace @greek/core dev",
-    "build": "yarn workspace @greek/core build",
-    "next:check-types": "yarn workspace @greek/core check-types",
-    "test": "yarn workspace @greek/foundry test",
-    "vercel": "yarn workspace @greek/core vercel"
+    "start": "cd core && yarn dev",
+    "build": "cd core && yarn build",
+    "next:check-types": "cd core && yarn check-types",
+    "vercel": "cd core && yarn vercel",
+    "direct": "cd market-maker && yarn direct",
+    "bebop": "cd market-maker && yarn bebop",
+    "relay": "cd market-maker && yarn relay",
+    "dev:direct": "cd market-maker && yarn dev:direct",
+    "dev:bebop": "cd market-maker && yarn dev:bebop",
+    "dev:relay": "cd market-maker && yarn dev:relay",
+    "fetch-metadata": "cd market-maker && yarn fetch-metadata"
   },
   "devDependencies": {
     "husky": "~9.1.7",

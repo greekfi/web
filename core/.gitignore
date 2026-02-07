@@ -37,3 +37,11 @@ yarn-error.log*
 *.tsbuildinfo
 ipfs-upload.config.json
 .env*.local
+
+# yarn cache
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

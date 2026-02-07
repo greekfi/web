@@ -2,7 +2,8 @@ import { formatUnits } from "viem";
 import { getOptionAddresses } from "./options";
 import { getPublicClient, getCurrentChainId } from "./client";
 import { readFileSync, existsSync } from "fs";
-import { join } from "path";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
 
 // Option contract ABI (minimal for metadata)
 const OPTION_ABI = [
@@ -131,6 +132,8 @@ export async function fetchOptionMetadata(optionAddress: string): Promise<Option
  */
 export function loadMetadataFromFile(): Map<string, OptionMetadata> | null {
   const chainId = getCurrentChainId();
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
   const filePath = join(__dirname, "..", "..", "data", `metadata-${chainId}.json`);
 
   if (!existsSync(filePath)) {

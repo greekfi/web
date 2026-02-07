@@ -17,7 +17,7 @@ export async function startRelayMode() {
 
   // Start local WebSocket server
   const wsServer = createWsRelay(relay);
-  const port = parseInt(process.env.RELAY_WS_PORT || "3004");
+  const port = parseInt(process.env.RELAY_WS_PORT || process.env.PORT || "3004");
 
   // The server already starts listening in the constructor
   console.log(`Bebop relay listening on port ${port}`);

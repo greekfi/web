@@ -1,0 +1,24 @@
+services:
+  bebop:
+    build: .
+    command: node dist/bebop.mjs
+    env_file: .env
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  relay:
+    build: .
+    command: node dist/relay.mjs
+    env_file: .env
+    ports:
+      - "3004:3004"
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

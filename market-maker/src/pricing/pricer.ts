@@ -386,7 +386,7 @@ export class Pricer {
         };
 
         const { signature } = await signQuote(quoteData, privateKey);
-        quoteResponse.signature = signature;
+        (quoteResponse as any).signature = signature;
         console.log(`✍️  Quote signed`);
       }
 

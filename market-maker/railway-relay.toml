@@ -1,0 +1,10 @@
+# Railway config for Relay service
+# Rename this to railway.toml when deploying the relay service
+
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+startCommand = "yarn relay"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10

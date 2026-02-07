@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useChainId } from "wagmi";
-import deployedContracts from "~~/contracts/deployedContracts";
+import deployedContracts from "~~/abi/deployedContracts";
 
 export const useContract = () => {
   const chainId = useChainId();
