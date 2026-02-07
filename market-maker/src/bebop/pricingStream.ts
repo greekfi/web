@@ -25,7 +25,7 @@ export class PricingStream {
   private pricer: Pricer;
   private interval: NodeJS.Timeout | null = null;
   private reconnectAttempts = 0;
-  private maxReconnectAttempts = 10;
+  private maxReconnectDelay = 300000; // Cap at 5 minutes
 
   constructor(config: PricingStreamConfig, pricer: Pricer) {
     this.config = config;
@@ -187,13 +187,8 @@ export class PricingStream {
   }
 
   private scheduleReconnect(): void {
-    if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-      console.error("Max reconnect attempts reached for pricing stream");
-      return;
-    }
-
-    const delay = 5000 * Math.pow(2, this.reconnectAttempts);
-    console.log(`Reconnecting pricing stream in ${delay}ms...`);
+    const delay = Math.min(5000 * Math.pow(2, this.reconnectAttempts), this.maxReconnectDelay);
+    console.log(`Reconnecting pricing stream in ${delay}ms... (attempt ${this.reconnectAttempts + 1})`);
 
     setTimeout(() => {
       this.reconnectAttempts++;
