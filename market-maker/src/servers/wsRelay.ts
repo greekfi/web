@@ -270,10 +270,10 @@ export class PricingServer {
       return;
     }
 
-    // Log first few option prices to confirm forwarding works
-    if (this.stats.pricesForwarded < 3) {
+    // Log first 3 option price matches to confirm filtering works
+    if (this.stats.pricesReceived - this.stats.pricesFiltered <= 3) {
       console.log(
-        `[relay-fwd] Option price: chain=${event.chainId} base=${event.data.base.slice(0, 10)}... bids=${event.data.bids.length} asks=${event.data.asks.length}`
+        `[relay-match] Option price: chain=${event.chainId} base=${event.data.base.slice(0, 10)}... bids=${event.data.bids.length} asks=${event.data.asks.length}`
       );
     }
 
