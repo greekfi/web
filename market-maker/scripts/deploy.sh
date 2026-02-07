@@ -11,11 +11,11 @@ echo "==> Deploying to $HOST:$REMOTE_DIR"
 
 # Pull latest code
 echo "==> Pulling latest code..."
-ssh "$HOST" "cd $REMOTE_DIR && git pull"
+ssh "$HOST" "cd $REMOTE_DIR && git fetch origin && git reset --hard origin/\$(git rev-parse --abbrev-ref HEAD)"
 
 # Install deps & build
 echo "==> Installing dependencies and building..."
-ssh "$HOST" "cd $REMOTE_DIR && yarn install --immutable && yarn build --no-dts"
+ssh "$HOST" "cd $REMOTE_DIR && yarn install && yarn build --no-dts"
 
 # Ensure logs directory exists
 ssh "$HOST" "mkdir -p $REMOTE_DIR/logs"
