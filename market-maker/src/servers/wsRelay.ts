@@ -68,6 +68,14 @@ export class PricingServer {
   private relay: PricingRelay;
   private clients: Map<WebSocket, ClientSubscription> = new Map();
   private heartbeatInterval: NodeJS.Timeout | null = null;
+  private statsInterval: NodeJS.Timeout | null = null;
+
+  // Stats tracking
+  private stats = {
+    pricesReceived: 0,
+    pricesForwarded: 0,
+    pricesFiltered: 0,
+  };
 
   constructor(relay: PricingRelay, port: number) {
     this.relay = relay;
@@ -76,8 +84,17 @@ export class PricingServer {
     this.setupServer();
     this.setupRelayListeners();
     this.startHeartbeat();
+    this.startStats();
 
     console.log(`📡 Pricing WebSocket server listening on port ${port}`);
+  }
+
+  private startStats(): void {
+    this.statsInterval = setInterval(() => {
+      console.log(
+        `[ws-stats] clients=${this.clients.size} | received=${this.stats.pricesReceived} forwarded=${this.stats.pricesForwarded} filtered=${this.stats.pricesFiltered}`
+      );
+    }, 30000);
   }
 
   private setupServer(): void {
@@ -245,9 +262,19 @@ export class PricingServer {
   }
 
   private broadcastPrice(event: PriceUpdateEvent): void {
+    this.stats.pricesReceived++;
+
     // Filter: only broadcast prices for our option tokens
     if (!isPairForOptionToken(event.chainId, event.pair)) {
+      this.stats.pricesFiltered++;
       return;
+    }
+
+    // Log first few option prices to confirm forwarding works
+    if (this.stats.pricesForwarded < 3) {
+      console.log(
+        `[relay-fwd] Option price: chain=${event.chainId} base=${event.data.base.slice(0, 10)}... bids=${event.data.bids.length} asks=${event.data.asks.length}`
+      );
     }
 
     const message: PriceMessage = {
@@ -262,6 +289,7 @@ export class PricingServer {
       asks: event.data.asks,
     };
 
+    let sent = 0;
     for (const [ws, subscription] of this.clients) {
       // Check chain subscription
       if (subscription.chains.size > 0 && !subscription.chains.has(event.chainId)) {
@@ -274,7 +302,9 @@ export class PricingServer {
       }
 
       this.send(ws, message);
+      sent++;
     }
+    if (sent > 0) this.stats.pricesForwarded++;
   }
 
   private broadcastStatusUpdate(): void {
@@ -334,9 +364,8 @@ export class PricingServer {
   stop(): void {
     console.log("🛑 Stopping Pricing Server");
 
-    if (this.heartbeatInterval) {
-      clearInterval(this.heartbeatInterval);
-    }
+    if (this.heartbeatInterval) clearInterval(this.heartbeatInterval);
+    if (this.statsInterval) clearInterval(this.statsInterval);
 
     for (const ws of this.wss.clients) {
       ws.close(1000, "Server shutdown");

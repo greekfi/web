@@ -63,6 +63,14 @@ export class PricingRelay extends EventEmitter {
   private baseReconnectDelay = 1000;
   private maxReconnectDelay = 60000; // Cap backoff at 60s
 
+  // Stats tracking
+  private stats = {
+    messagesReceived: 0,
+    pairsUpdated: 0,
+    lastMessageAt: 0,
+  };
+  private statsInterval: NodeJS.Timeout | null = null;
+
   constructor(config: PricingRelayConfig) {
     super();
     this.config = config;
@@ -70,7 +78,7 @@ export class PricingRelay extends EventEmitter {
 
   // Start connecting to all configured chains
   async start(): Promise<void> {
-    console.log(`🚀 Starting Pricing Relay for ${this.config.chains.length} chains`);
+    console.log(`🚀 Starting Pricing Relay for ${this.config.chains.length} chains: [${this.config.chains.join(", ")}]`);
 
     for (const chain of this.config.chains) {
       if (!TAKER_CHAINS[chain]) {
@@ -79,6 +87,21 @@ export class PricingRelay extends EventEmitter {
       }
       this.connectToChain(chain);
     }
+
+    // Log stats every 30s
+    this.statsInterval = setInterval(() => this.logStats(), 30000);
+  }
+
+  private logStats(): void {
+    const connStatus = Object.entries(this.getStatus())
+      .map(([chain, connected]) => `${chain}:${connected ? "UP" : "DOWN"}`)
+      .join(", ");
+    const elapsed = this.stats.lastMessageAt
+      ? `${((Date.now() - this.stats.lastMessageAt) / 1000).toFixed(0)}s ago`
+      : "never";
+    console.log(
+      `[relay-stats] connections=[${connStatus}] cache=${this.prices.size} pairs | msgs=${this.stats.messagesReceived} | pairs_updated=${this.stats.pairsUpdated} | last_msg=${elapsed}`
+    );
   }
 
   // Connect to a single chain's pricing feed
@@ -122,8 +145,16 @@ export class PricingRelay extends EventEmitter {
 
   // Handle incoming protobuf message
   private handleMessage(chain: string, chainId: number, data: Buffer): void {
+    this.stats.messagesReceived++;
+    this.stats.lastMessageAt = Date.now();
+
     try {
       const update = bebop.BebopPricingUpdate.decode(data);
+
+      // Log first message from each chain to confirm data is flowing
+      if (this.stats.messagesReceived <= this.config.chains.length) {
+        console.log(`[relay] First message from ${chain}: ${update.pairs.length} pairs, ${data.length} bytes`);
+      }
 
       for (const pair of update.pairs) {
         const base = bytesToAddress(pair.base);
@@ -131,16 +162,12 @@ export class PricingRelay extends EventEmitter {
 
         if (!base || !quote) continue;
 
+        this.stats.pairsUpdated++;
         const pairKey = `${base}/${quote}`;
         const cacheKey = `${chainId}:${pairKey}`;
 
         const bids = toPriceLevels(pair.bids || []);
         const asks = toPriceLevels(pair.asks || []);
-
-        // Debug: log when we get option prices
-        if (base.toLowerCase().includes("2b8280") || base.toLowerCase().includes("a59fee")) {
-          console.log(`🔍 Option price received: ${base.slice(0,10)}... bids=${JSON.stringify(bids)} asks=${JSON.stringify(asks)}`);
-        }
 
         const priceData: PriceData = {
           base,
@@ -249,6 +276,7 @@ export class PricingRelay extends EventEmitter {
   // Graceful shutdown
   stop(): void {
     console.log("🛑 Stopping Pricing Relay");
+    if (this.statsInterval) clearInterval(this.statsInterval);
     for (const [chain, ws] of this.connections) {
       console.log(`   Closing ${chain} connection`);
       ws.close(1000, "Client disconnect");
